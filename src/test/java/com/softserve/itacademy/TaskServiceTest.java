@@ -109,6 +109,23 @@ public class TaskServiceTest {
 
     @Test
     void deleteTask() {
+        User user1 = new User("FirstName2", "LastName", "email", "password");
+        ToDo toDo1 = new ToDo("title6", LocalDateTime.now());
+        Task task1 = new Task("name7", Priority.MEDIUM);
+        Task task2 = new Task("name8", Priority.MEDIUM);
+        Task task3 = new Task("name9", Priority.MEDIUM);
+
+        userService.addUser(user1);
+        toDoService.addTodo(toDo1, user1);
+        taskService.addTask(task1, toDo1);
+        taskService.addTask(task2, toDo1);
+        taskService.addTask(task3, toDo1);
+
+        List<Task> tasks = taskService.getAll();
+        int expect = tasks.size() - 1;
+        taskService.deleteTask(task3);
+
+        assertEquals(expect, taskService.getAll().size());
     }
 
     @Test
