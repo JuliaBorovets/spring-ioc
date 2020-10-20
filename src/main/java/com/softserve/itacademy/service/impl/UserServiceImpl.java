@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() {
-        // TODO
-        return null;
+        return users;
     }
 }
