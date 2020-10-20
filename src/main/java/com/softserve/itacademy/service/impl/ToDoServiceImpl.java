@@ -25,13 +25,14 @@ public class ToDoServiceImpl implements ToDoService {
 
     public ToDo addTodo(ToDo todo, User user) {
 
-        if (todo != null && user != null) {
-            todo.setOwner(user);
-            user.getMyTodos().add(todo);
-            return todo;
-        } else {
+        if (todo == null || user == null) {
             throw new IllegalArgumentException("Can not be null arguments");
         }
+
+        todo.setOwner(user);
+        user.getMyTodos().add(todo);
+        return todo;
+
     }
 
     public ToDo updateTodo(Integer id, ToDo todo) {
@@ -76,8 +77,17 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public ToDo getByUserTitle(User user, String title) {
-        // TODO
-        return null;
+
+        if (user == null) {
+            throw new RuntimeException("User can not be null");
+        }
+
+        return user.getMyTodos()
+                .stream()
+                .filter(i -> title.equals(i.getTitle()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can not find ToDo with title=" + title));
+
     }
 
 }

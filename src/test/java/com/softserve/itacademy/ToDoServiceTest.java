@@ -178,5 +178,52 @@ public class ToDoServiceTest {
     }
 
 
-    // TODO, other tests
+    @Test
+    void checkGetByUserTitle() {
+
+        User user = new User("FirstName", "LastName", "email", "password");
+        List<ToDo> expectedList = Arrays.asList(
+                new ToDo("Title1", LocalDateTime.now()),
+                new ToDo("Title2", LocalDateTime.now()),
+                new ToDo("Title3", LocalDateTime.now()));
+
+        user.setMyTodos(expectedList);
+
+        String title = "Title1";
+
+        ToDo actualToDo = toDoService.getByUserTitle(user, title);
+
+        assertTrue(expectedList.contains(actualToDo));
+    }
+
+    @Test
+    void shouldThrowExceptionGetByUserTitleUserIsNull() {
+
+        String title = "Title";
+
+        Throwable throwable = assertThrows(RuntimeException.class, () -> {
+            ToDo actualToDo = toDoService.getByUserTitle(null, title);
+        });
+
+        assertEquals("User can not be null", throwable.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionGetByUserTitleNoTitle() {
+
+        User user = new User("FirstName", "LastName", "email", "password");
+        List<ToDo> expectedList = Arrays.asList(
+                new ToDo("Title1", LocalDateTime.now()),
+                new ToDo("Title3", LocalDateTime.now()));
+
+        user.setMyTodos(expectedList);
+
+        String title = "Title";
+
+        Throwable throwable = assertThrows(RuntimeException.class, () -> {
+            ToDo actualToDo = toDoService.getByUserTitle(user, title);
+        });
+
+        assertEquals("Can not find ToDo with title=" + title, throwable.getMessage());
+    }
 }
