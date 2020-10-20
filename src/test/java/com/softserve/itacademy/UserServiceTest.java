@@ -9,6 +9,9 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(JUnitPlatform.class)
 public class UserServiceTest {
     private static UserService userService;
@@ -61,13 +64,13 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldNotUpdateNullUser(){
+    void shouldNotUpdateNullUser() {
         User user1 = userService.addUser(new User("firstName #1", "lastName #1", "email #1", "pass #1"));
         User user2 = userService.addUser(new User("firstName #2", "lastName #2", "email #2", "pass #2"));
 
-        User actual = userService.updateUser(user1.getUserId(),null);
+        User actual = userService.updateUser(user1.getUserId(), null);
 
-        Assertions.assertNull( actual, "user not updated");
+        Assertions.assertNull(actual, "user not updated");
     }
 
     @Test
@@ -81,6 +84,19 @@ public class UserServiceTest {
         User actual = userService.getUserById(user1.getUserId());
 
         Assertions.assertEquals(user1, actual);
+    }
+
+    @Test
+    void checkGetAll() {
+        userService.addUser(user);
+        userService.addUser(user);
+        List<User> expected = new ArrayList<>();
+        expected.add(user);
+        expected.add(user);
+
+        List<User> actual = userService.getAll();
+
+        Assertions.assertEquals(expected, actual);
     }
 
 
