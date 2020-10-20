@@ -114,6 +114,43 @@ public class ToDoServiceTest {
         assertEquals("can not find ToDo with id=-1", throwable.getMessage());
     }
 
+    @Test
+    void checkDeleteToDo() {
+        User user = new User("FirstName", "LastName", "email", "password");
+        ToDo toDoToDelete = new ToDo("title", LocalDateTime.now());
+        toDoToDelete.getTasks().add(new Task("name", Priority.HIGH));
+
+        userService.addUser(user);
+        toDoService.addTodo(toDoToDelete, user);
+
+        List<ToDo> list = toDoService.getAll();
+        int expectedSize = list.size() - 1;
+
+        toDoService.deleteTodo(toDoToDelete);
+
+        assertEquals(expectedSize, toDoService.getAll().size());
+
+    }
+
+    @Test
+    void checkDeleteToDoNullValue() {
+
+        User user = new User("FirstName", "LastName", "email", "password");
+        ToDo toDoToDelete = new ToDo("title", LocalDateTime.now());
+        toDoToDelete.getTasks().add(new Task("name", Priority.HIGH));
+
+        userService.addUser(user);
+        toDoService.addTodo(toDoToDelete, user);
+
+        List<ToDo> list = toDoService.getAll();
+        int expectedSize = list.size();
+
+        toDoService.deleteTodo(null);
+
+        assertEquals(expectedSize, toDoService.getAll().size());
+
+    }
+
 
     // TODO, other tests
 }

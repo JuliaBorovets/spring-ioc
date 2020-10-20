@@ -52,7 +52,8 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public void deleteTodo(ToDo todo) {
-        // TODO
+        userService.getAll()
+                .forEach(i -> i.getMyTodos().remove(todo));
     }
 
     public List<ToDo> getAll() {
