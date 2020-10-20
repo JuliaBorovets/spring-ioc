@@ -12,7 +12,7 @@ public class Task {
 
     private Priority priority;
 
-    public Task(Integer taskId, String name, Priority priority) {
+    public Task(String name, Priority priority) {
         this.taskId = counter++;
         this.name = name;
         this.priority = priority;

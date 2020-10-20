@@ -33,10 +33,6 @@ public class User {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public String getFirstName() {
         return firstName;
     }
