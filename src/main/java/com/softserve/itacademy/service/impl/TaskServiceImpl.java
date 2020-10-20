@@ -8,9 +8,7 @@ import com.softserve.itacademy.service.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("TaskService")
@@ -76,8 +74,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> getByToDo(ToDo todo) {
-        // TODO
-        return null;
+        List<Task> tasks = new ArrayList<>();
+
+        Optional.ofNullable(todo)
+                .ifPresent(i -> tasks.addAll(i.getTasks()));
+
+        return tasks;
     }
 
     @Override
