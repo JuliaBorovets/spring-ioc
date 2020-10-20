@@ -102,4 +102,10 @@ public class User {
         result = 31 * result + (myTodos != null ? myTodos.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "userId=" + userId + ", firstName='" + firstName + ", lastName='" + lastName +
+                ", email='" + email + ", password='" + password + ", myTodos=" + myTodos + '}';
+    }
 }
