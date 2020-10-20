@@ -1,14 +1,13 @@
 package com.softserve.itacademy.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.ToDoService;
 import com.softserve.itacademy.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ToDoServiceImpl implements ToDoService {
@@ -21,8 +20,14 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public ToDo addTodo(ToDo todo, User user) {
-        // TODO
-        return null;
+
+        if (todo != null && user != null) {
+            todo.setOwner(user);
+            user.getMyTodos().add(todo);
+            return todo;
+        } else {
+            throw new IllegalArgumentException("Can not be null arguments");
+        }
     }
 
     public ToDo updateTodo(ToDo todo) {
