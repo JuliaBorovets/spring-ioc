@@ -1,7 +1,6 @@
 package com.softserve.itacademy.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -20,11 +19,10 @@ public class ToDo {
 
     private List<Task> tasks;
 
-    public ToDo(String title, LocalDateTime createdAt, User owner) {
+    public ToDo(String title, LocalDateTime createdAt) {
         this.toDoId = counter++;
         this.title = title;
         this.createdAt = createdAt;
-        this.owner = owner;
         this.tasks = new LinkedList<>();
     }
 
@@ -91,6 +89,6 @@ public class ToDo {
     @Override
     public String toString() {
         return "ToDo{" + "toDoId=" + toDoId + ", title='" + title + ", createdAt=" + createdAt +
-                ", owner=" + owner + ", tasks=" + tasks + '}';
+                ", ownerId=" + owner.getUserId() + ", tasks=" + tasks + '}';
     }
 }
