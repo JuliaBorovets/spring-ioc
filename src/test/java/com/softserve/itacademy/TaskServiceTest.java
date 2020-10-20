@@ -89,7 +89,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void getTaskById() {
+    void checkGetTaskById() {
         User owner = new User("FirstName1", "LastName", "email", "password");
 
         ToDo toDo = new ToDo("title3", LocalDateTime.now());
@@ -108,7 +108,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void deleteTask() {
+    void checkDeleteTask() {
         User user1 = new User("FirstName2", "LastName", "email", "password");
         ToDo toDo1 = new ToDo("title6", LocalDateTime.now());
         Task task1 = new Task("name7", Priority.MEDIUM);
@@ -129,7 +129,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void getAll() {
+    void checkGetAll() {
         User user1 = new User("FirstName2", "LastName", "email", "password");
         ToDo toDo1 = new ToDo("title4", LocalDateTime.now());
         Task task1 = new Task("name5", Priority.MEDIUM);
@@ -169,7 +169,9 @@ public class TaskServiceTest {
         taskService.addTask(task2, toDo2);
         taskService.addTask(task3, toDo2);
 
-        List<Task> expectedTasks = List.of(task2, task3);
+        List<Task> expectedTasks = new ArrayList<>();
+        expectedTasks.add(task2);
+        expectedTasks.add(task3);
         List<Task> actualTasks = taskService.getByToDo(toDo2);
 
         assertEquals(expectedTasks, actualTasks);
@@ -185,12 +187,37 @@ public class TaskServiceTest {
     }
 
     @Test
-    void getByToDoName() {
+    void checkGetByToDoName() {
+        User user1 = new User("FirstName4", "LastName", "email", "password");
+        ToDo toDo1 = new ToDo("title7", LocalDateTime.now());
+        ToDo toDo2 = new ToDo("title8", LocalDateTime.now());
+        Task task1 = new Task("name10", Priority.LOW);
+        Task task2 = new Task("name11", Priority.MEDIUM);
+        Task task3 = new Task("name12", Priority.HIGH);
+        userService.addUser(user1);
+        toDoService.addTodo(toDo1, user1);
+        toDoService.addTodo(toDo2, user1);
+        taskService.addTask(task1, toDo1);
+        taskService.addTask(task2, toDo2);
+        taskService.addTask(task3, toDo2);
+
+        Task actualTask = taskService.getByToDoName(toDo1, "name10");
+
+        assertEquals(task1, actualTask);
     }
 
     @Test
-    void getByUserName() {
+    void shouldThrowRuntimeExceptionGetByToDoNameTest() {
+        String expectedMessage = "ToDo cannot be null";
+
+        String actualMessage = Assertions.assertThrows(RuntimeException.class, () -> {
+            taskService.getByToDoName(null, "Some Name");
+        }).getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
     }
 
-    // TODO, other tests
+    @Test
+    void checkGetByUserName() {
+    }
 }

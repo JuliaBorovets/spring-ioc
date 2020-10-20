@@ -84,8 +84,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getByToDoName(ToDo todo, String name) {
-        // TODO
-        return null;
+        if (Objects.nonNull(todo)) {
+            return todo.getTasks()
+                    .stream()
+                    .filter(i -> name.equals(i.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Cannot find task with a name=" + name));
+        } else {
+            throw new RuntimeException("ToDo cannot be null");
+        }
     }
 
     @Override
