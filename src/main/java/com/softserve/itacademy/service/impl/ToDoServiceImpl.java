@@ -7,7 +7,9 @@ import com.softserve.itacademy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ToDoServiceImpl implements ToDoService {
@@ -40,8 +42,11 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public List<ToDo> getAll() {
-        // TODO
-        return null;
+        return userService.getAll()
+                .stream()
+                .map(User::getMyTodos)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public List<ToDo> getByUser(User user) {

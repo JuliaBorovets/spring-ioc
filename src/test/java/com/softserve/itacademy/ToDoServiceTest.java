@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -51,6 +53,25 @@ public class ToDoServiceTest {
         assertEquals("Can not be null arguments", throwable.getMessage());
     }
 
+    @Test
+    void checkGetAll() {
+
+        User user1 = new User("FirstName1", "LastName1", "email1", "password1");
+        ToDo toDo1 = new ToDo("title1", LocalDateTime.now());
+
+        User user2 = new User("FirstName2", "LastName2", "email2", "password2");
+        ToDo toDo2 = new ToDo("title2", LocalDateTime.now());
+
+        userService.addUser(user1);
+        userService.addUser(user2);
+        toDoService.addTodo(toDo1, user1);
+        toDoService.addTodo(toDo2, user2);
+
+        List<ToDo> expected = Arrays.asList(toDo1, toDo2);
+        List<ToDo> actual = toDoService.getAll();
+
+        assertEquals(expected, actual);
+    }
 
     // TODO, other tests
 }
