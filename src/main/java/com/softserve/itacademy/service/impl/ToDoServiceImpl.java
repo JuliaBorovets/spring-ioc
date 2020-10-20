@@ -32,9 +32,23 @@ public class ToDoServiceImpl implements ToDoService {
         }
     }
 
-    public ToDo updateTodo(ToDo todo) {
-        // TODO
-        return null;
+    public ToDo updateTodo(Integer id, ToDo todo) {
+
+        ToDo updatedToDo = getToDoById(id);
+
+        updatedToDo.setOwner(todo.getOwner());
+        updatedToDo.setCreatedAt(todo.getCreatedAt());
+        updatedToDo.setTasks(todo.getTasks());
+        updatedToDo.setTitle(todo.getTitle());
+
+        return updatedToDo;
+    }
+
+    private ToDo getToDoById(Integer id) {
+        return getAll().stream()
+                .filter(i -> i.getToDoId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("can not find ToDo with id=" + id));
     }
 
     public void deleteTodo(ToDo todo) {

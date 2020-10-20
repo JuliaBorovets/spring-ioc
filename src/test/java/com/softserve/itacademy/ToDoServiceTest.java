@@ -1,5 +1,7 @@
 package com.softserve.itacademy;
 
+import com.softserve.itacademy.model.Priority;
+import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.ToDoService;
@@ -72,6 +74,46 @@ public class ToDoServiceTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    void checkUpdateToDo() {
+
+        User oldOwner = new User("FirstName1", "LastName1", "email1", "password1");
+        ToDo oldToDo = new ToDo("title edited", LocalDateTime.now().minusDays(1));
+        userService.addUser(oldOwner);
+        toDoService.addTodo(oldToDo, oldOwner);
+
+        ToDo expectedToDo = new ToDo("title edited", LocalDateTime.now());
+        expectedToDo.getTasks().add(new Task("name", Priority.HIGH));
+
+        User expectedOwner = new User("FirstName2", "LastName2", "email2", "password2");
+        expectedToDo.setOwner(expectedOwner);
+
+        ToDo actual = toDoService.updateTodo(oldToDo.getToDoId(), expectedToDo);
+
+        assertEquals(oldToDo.getToDoId(), actual.getToDoId());
+        assertEquals(expectedOwner, actual.getOwner());
+        assertEquals(expectedToDo.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expectedToDo.getTasks(), actual.getTasks());
+        assertEquals(expectedToDo.getTitle(), actual.getTitle());
+    }
+
+    @Test
+    void shouldThrowExceptionUpdateToDo() {
+
+        ToDo expectedToDo = new ToDo("title edited", LocalDateTime.now());
+        expectedToDo.getTasks().add(new Task("name", Priority.HIGH));
+
+        User expectedOwner = new User("FirstName2", "LastName2", "email2", "password2");
+        expectedToDo.setOwner(expectedOwner);
+
+        Throwable throwable = assertThrows(RuntimeException.class, () -> {
+            ToDo actual = toDoService.updateTodo(-1, expectedToDo);
+        });
+
+        assertEquals("can not find ToDo with id=-1", throwable.getMessage());
+    }
+
 
     // TODO, other tests
 }
