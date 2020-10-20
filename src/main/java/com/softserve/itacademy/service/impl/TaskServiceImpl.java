@@ -1,17 +1,17 @@
 package com.softserve.itacademy.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.TaskService;
 import com.softserve.itacademy.service.ToDoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+import java.util.Objects;
+
+@Service("TaskService")
 public class TaskServiceImpl implements TaskService {
 
     private ToDoService toDoService;
@@ -22,8 +22,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     public Task addTask(Task task, ToDo todo) {
-        // TODO
-        return null;
+
+        if (Objects.nonNull(task) && Objects.nonNull(todo)) {
+
+            todo.getTasks().add(task);
+            return task;
+        }else {
+            throw new IllegalArgumentException("Can not be null arguments");
+        }
     }
 
     public Task updateTask(Task task) {
