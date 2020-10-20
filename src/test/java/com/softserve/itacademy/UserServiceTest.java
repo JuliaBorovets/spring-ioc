@@ -14,6 +14,8 @@ import com.softserve.itacademy.service.UserService;
 public class UserServiceTest {
     private static UserService userService;
 
+    private User user = new User("FirstName", "LastName", "email@gmail.com", "password");
+
     @BeforeAll
     public static void setupBeforeClass() throws Exception {
         AnnotationConfigApplicationContext annotationConfigContext = new AnnotationConfigApplicationContext(Config.class);
@@ -23,11 +25,20 @@ public class UserServiceTest {
 
     @Test
     public void checkAddUser() {
-        User user = null;       // TODO, update code
-        User expected = null;   // TODO, update code
+        User expected = user;
         User actual = userService.addUser(user);
-        Assertions.assertEquals(expected, actual, "check message");
+        //todo check with list (not implemented yet)
+        Assertions.assertEquals(expected, actual, "user added");
     }
+
+    @Test
+    public void ShouldNotAddUser() {
+        User expected = null;
+        User actual = userService.addUser(null);
+        //todo check with list (not implemented yet)
+        Assertions.assertNull(actual, "user not added");
+    }
+
 
     // TODO, other tests
 }

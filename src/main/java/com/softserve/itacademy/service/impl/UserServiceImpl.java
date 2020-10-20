@@ -2,13 +2,14 @@ package com.softserve.itacademy.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
-@Service
+@Service("UserService")
 public class UserServiceImpl implements UserService {
 
     private List<User> users;
@@ -19,8 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        // TODO
-        return null;
+        Optional.ofNullable(user).ifPresent(users::add);
+        return user;
     }
 
     @Override

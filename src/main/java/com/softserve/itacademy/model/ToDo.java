@@ -91,4 +91,10 @@ public class ToDo {
         result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "ToDo{" + "toDoId=" + toDoId + ", title='" + title + ", createdAt=" + createdAt +
+                ", owner=" + owner + ", tasks=" + tasks + '}';
+    }
 }
