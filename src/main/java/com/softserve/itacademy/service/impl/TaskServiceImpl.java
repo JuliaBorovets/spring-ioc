@@ -5,6 +5,7 @@ import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.TaskService;
 import com.softserve.itacademy.service.ToDoService;
+import com.softserve.itacademy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,11 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private ToDoService toDoService;
+    private UserService userService;
 
     @Autowired
-    public TaskServiceImpl(ToDoService toDoService) {
+    public TaskServiceImpl(UserService userService, ToDoService toDoService) {
+        this.userService = userService;
         this.toDoService = toDoService;
     }
 
@@ -97,7 +100,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task getByUserName(User user, String name) {
-        // TODO
-        return null;
+        if (Objects.nonNull(user)) {
+            return userService.getAll().stream()
+                    .flatMap(user1 -> user1.getMyTodos().stream()
+                            .flatMap(toDo -> toDo.getTasks().stream()))
+                    .filter(task -> name.equals(task.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Cannot find task with a name=" + name));
+        } else {
+            throw new RuntimeException("ToDo cannot be null");
+        }
     }
 }

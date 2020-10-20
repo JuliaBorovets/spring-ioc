@@ -219,5 +219,32 @@ public class TaskServiceTest {
 
     @Test
     void checkGetByUserName() {
+        User user1 = new User("FirstName4", "LastName", "email", "password");
+        ToDo toDo1 = new ToDo("title7", LocalDateTime.now());
+        ToDo toDo2 = new ToDo("title8", LocalDateTime.now());
+        Task task1 = new Task("name10", Priority.LOW);
+        Task task2 = new Task("name11", Priority.MEDIUM);
+        Task task3 = new Task("name12", Priority.HIGH);
+        userService.addUser(user1);
+        toDoService.addTodo(toDo1, user1);
+        toDoService.addTodo(toDo2, user1);
+        taskService.addTask(task1, toDo1);
+        taskService.addTask(task2, toDo2);
+        taskService.addTask(task3, toDo2);
+
+        Task actualTask = taskService.getByUserName(user1, "name10");
+
+        assertEquals(task1, actualTask);
+    }
+
+    @Test
+    void shouldThrowRuntimeExceptionGetByUserNameTest() {
+        String expectedMessage = "ToDo cannot be null";
+
+        String actualMessage = Assertions.assertThrows(RuntimeException.class, () -> {
+            taskService.getByUserName(null, "Some Name");
+        }).getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
     }
 }
