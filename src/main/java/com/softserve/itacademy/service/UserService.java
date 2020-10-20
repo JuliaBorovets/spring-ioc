@@ -15,6 +15,4 @@ public interface UserService {
     void deleteUser(User user);
 
     List<User> getAll();
-
-    void clearUserList();
 }
