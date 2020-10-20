@@ -3,6 +3,7 @@ package com.softserve.itacademy;
 import com.softserve.itacademy.model.Priority;
 import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
+import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.TaskService;
 import com.softserve.itacademy.service.ToDoService;
 import com.softserve.itacademy.service.UserService;
@@ -14,6 +15,8 @@ import org.junit.runner.RunWith;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +32,7 @@ public class TaskServiceTest {
         AnnotationConfigApplicationContext annotationConfigContext = new AnnotationConfigApplicationContext(Config.class);
         userService = annotationConfigContext.getBean(UserService.class);
         taskService = annotationConfigContext.getBean(TaskService.class);
+        toDoService = annotationConfigContext.getBean(ToDoService.class);
         annotationConfigContext.close();
     }
 
@@ -54,7 +58,53 @@ public class TaskServiceTest {
     }
 
     @Test
-    void updateTask() {
+    void checkUpdateTask() {
+        User owner = new User("FirstName", "LastName", "email", "password");
+
+        ToDo toDo = new ToDo("title2", LocalDateTime.now());
+        Task task1 = new Task("name2", Priority.LOW);
+        Task task2 = new Task("name3", Priority.LOW);
+        userService.addUser(owner);
+        toDoService.addTodo(toDo, owner);
+
+        List<Task> tasks = toDo.getTasks();
+        tasks.add(task1);
+        tasks.add(task2);
+
+        Task expected = new Task("name4", Priority.HIGH);
+        Task actual = taskService.updateTask(task2.getTaskId(), expected);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentExceptionUpdateTest() {
+        String expectedMessage = "Task cannot be null";
+
+        String actualMessage = Assertions.assertThrows(RuntimeException.class, () -> {
+            taskService.updateTask(1, null);
+        }).getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    void getTaskById() {
+        User owner = new User("FirstName1", "LastName", "email", "password");
+
+        ToDo toDo = new ToDo("title3", LocalDateTime.now());
+        Task task1 = new Task("name3", Priority.LOW);
+        Task task2 = new Task("name4", Priority.LOW);
+        userService.addUser(owner);
+        toDoService.addTodo(toDo, owner);
+
+        List<Task> tasks = toDo.getTasks();
+        tasks.add(task1);
+        tasks.add(task2);
+
+        Task actual = taskService.getTaskById(task1.getTaskId());
+
+        assertEquals(task1, actual);
     }
 
     @Test
@@ -63,6 +113,28 @@ public class TaskServiceTest {
 
     @Test
     void getAll() {
+        User user1 = new User("FirstName2", "LastName", "email", "password");
+        ToDo toDo1 = new ToDo("title4", LocalDateTime.now());
+        Task task1 = new Task("name5", Priority.MEDIUM);
+
+        User user2 = new User("FirstName3", "LastName", "email", "password");
+        ToDo toDo2 = new ToDo("title5", LocalDateTime.now());
+        Task task2 = new Task("name6", Priority.HIGH);
+
+        userService.addUser(user1);
+        userService.addUser(user2);
+        toDoService.addTodo(toDo1, user1);
+        toDoService.addTodo(toDo2, user2);
+        taskService.addTask(task1, toDo1);
+        taskService.addTask(task2, toDo2);
+
+        List<Task> expected = new ArrayList<>();
+        expected.add(task1);
+        expected.add(task2);
+
+        List<Task> actual = taskService.getAll();
+
+        assertEquals(expected, actual);
     }
 
     @Test
