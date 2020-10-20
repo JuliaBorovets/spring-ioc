@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -149,6 +150,31 @@ public class ToDoServiceTest {
 
         assertEquals(expectedSize, toDoService.getAll().size());
 
+    }
+
+    @Test
+    void checkGetByUser() {
+
+        User user = new User("FirstName", "LastName", "email", "password");
+        List<ToDo> expectedList = Arrays.asList(
+                new ToDo("Title1", LocalDateTime.now()),
+                new ToDo("Title2", LocalDateTime.now()),
+                new ToDo("Title3", LocalDateTime.now()));
+        user.setMyTodos(expectedList);
+
+        List<ToDo> actualList = toDoService.getByUser(user);
+
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void checkGetByUserNullValue() {
+
+        List<ToDo> expectedList = new ArrayList<>();
+
+        List<ToDo> actualList = toDoService.getByUser(null);
+
+        assertEquals(expectedList, actualList);
     }
 
 

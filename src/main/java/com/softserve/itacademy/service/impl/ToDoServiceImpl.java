@@ -7,8 +7,10 @@ import com.softserve.itacademy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,8 +67,12 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     public List<ToDo> getByUser(User user) {
-        // TODO
-        return null;
+        List<ToDo> toDoList = new ArrayList<>();
+
+        Optional.ofNullable(user)
+                .ifPresent(i -> toDoList.addAll(i.getMyTodos()));
+
+        return toDoList;
     }
 
     public ToDo getByUserTitle(User user, String title) {
