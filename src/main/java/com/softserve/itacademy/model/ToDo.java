@@ -32,10 +32,6 @@ public class ToDo {
         return toDoId;
     }
 
-    public void setToDoId(Integer toDoId) {
-        this.toDoId = toDoId;
-    }
-
     public String getTitle() {
         return title;
     }
