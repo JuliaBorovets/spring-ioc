@@ -10,7 +10,9 @@ public interface TaskService {
     
     Task addTask(Task task, ToDo todo);
 
-    Task updateTask(Task task);
+    Task updateTask(Integer id, Task task);
+
+    Task getTaskById(Integer id);
 
     void deleteTask(Task task);
 
@@ -21,5 +23,4 @@ public interface TaskService {
     Task getByToDoName(ToDo todo, String name);
 
     Task getByUserName(User user, String name);
-    
 }
