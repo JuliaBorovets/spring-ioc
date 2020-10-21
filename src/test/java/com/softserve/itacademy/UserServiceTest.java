@@ -2,6 +2,7 @@ package com.softserve.itacademy;
 
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,18 +28,26 @@ public class UserServiceTest {
 
     @Test
     public void checkAddUser() {
+        int userListSizeBegin = userService.getAll().size();
+
         User expected = user;
         User actual = userService.addUser(user);
-        //todo check with list (not implemented yet)
+
+        int userListSizeEnd = userService.getAll().size();
+
         Assertions.assertEquals(expected, actual, "user added");
+        Assertions.assertEquals(userListSizeEnd, userListSizeBegin + 1);
     }
 
     @Test
     public void ShouldNotAddUser() {
+        int userListSizeBegin = userService.getAll().size();
         User expected = null;
         User actual = userService.addUser(null);
-        //todo check with list (not implemented yet)
+        int userListSizeEnd = userService.getAll().size();
+
         Assertions.assertNull(actual, "user not added");
+        Assertions.assertEquals(userListSizeEnd, userListSizeBegin);
     }
 
     @Test
@@ -50,6 +59,22 @@ public class UserServiceTest {
         User actual = userService.updateUser(user1.getUserId(), this.user);
 
         Assertions.assertEquals(expected, actual, "user updated");
+    }
+
+    @Test
+    void checkDeleteUser() {
+
+        User userToDelete = new User("FirstName", "LastName", "email", "password");
+        userService.addUser(userToDelete);
+        int userListSizeBegin = userService.getAll().size();
+        int expected = userListSizeBegin - 1;
+
+        userService.deleteUser(userToDelete);
+
+        int actual = userService.getAll().size();
+
+        Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
@@ -71,6 +96,36 @@ public class UserServiceTest {
         User actual = userService.updateUser(user1.getUserId(), null);
 
         Assertions.assertNull(actual, "user not updated");
+    }
+
+    @Test
+    void checkDeleteUserNull() {
+
+        User userToDelete = new User("FirstName", "LastName", "email", "password");
+        userService.addUser(userToDelete);
+
+        int expected = userService.getAll().size();
+
+        userService.deleteUser(null);
+
+        int actual = userService.getAll().size();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void checkClearUserList() {
+        User userToDelete = new User("FirstName", "LastName", "email", "password");
+        userService.addUser(userToDelete);
+
+        int userListSizeBegin = userService.getAll().size();
+
+        userService.clearUserList();
+
+        int actualSize = userService.getAll().size();
+
+        Assertions.assertEquals(0, actualSize);
+        Assertions.assertNotEquals(0, userListSizeBegin);
     }
 
     @Test
@@ -99,6 +154,9 @@ public class UserServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    @AfterEach
+    void tearDown() {
+        userService.clearUserList();
+    }
 
-    // TODO, other tests
 }
