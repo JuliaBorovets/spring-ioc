@@ -49,7 +49,7 @@ public class TaskServiceTest {
 
     @Test
     void shouldThrowIllegalArgumentExceptionAddTest() {
-        String expectedMessage = "Can not be null arguments";
+        String expectedMessage = "Cannot be null arguments";
         String actualMessage = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             taskService.addTask(null, null);
         }).getMessage();
@@ -130,6 +130,8 @@ public class TaskServiceTest {
 
     @Test
     void checkGetAll() {
+        userService.clearUserList();
+
         User user1 = new User("FirstName2", "LastName", "email", "password");
         ToDo toDo1 = new ToDo("title4", LocalDateTime.now());
         Task task1 = new Task("name5", Priority.MEDIUM);
@@ -219,6 +221,8 @@ public class TaskServiceTest {
 
     @Test
     void checkGetByUserName() {
+        userService.clearUserList();
+
         User user1 = new User("FirstName4", "LastName", "email", "password");
         ToDo toDo1 = new ToDo("title7", LocalDateTime.now());
         ToDo toDo2 = new ToDo("title8", LocalDateTime.now());
