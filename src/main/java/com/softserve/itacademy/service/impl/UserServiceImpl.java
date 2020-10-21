@@ -44,15 +44,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(User user) {
-        Optional.ofNullable(user).ifPresent(users::remove);
+        // TODO
     }
 
     @Override
     public List<User> getAll() {
         return users;
-    }
-
-    public void clearUserList() {
-        users.clear();
     }
 }
